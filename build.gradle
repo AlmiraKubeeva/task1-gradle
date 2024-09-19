@@ -1,0 +1,36 @@
+
+plugins {
+    id 'java'
+}
+
+allprojects {
+    group = 'com.example'
+    version = '1.0-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
+        testImplementation 'io.qameta.allure:allure-junit5:2.29.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    tasks.register('smoke', Test) {
+        testLogging {
+            events "passed", "skipped", "failed", "standardOut", "standardError"
+            exceptionFormat "full"
+        }
+        useJUnitPlatform {
+            includeTags("smoke")
+        }
+    }
+}

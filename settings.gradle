@@ -1,0 +1,4 @@
+rootProject.name = 'task1-gradle'
+include 'api-tests'
+include 'ui-tests'
+
