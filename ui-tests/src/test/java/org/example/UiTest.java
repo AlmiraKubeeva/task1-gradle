@@ -106,7 +106,7 @@ public class UiTest {
     После каждого неудачного клика закрывать всплывающее уведомление.
      */
     @Test
-    void notificationMessagesTest() throws InterruptedException {
+    void notificationMessagesTest() {
         open(baseUrl + NOTIFICATION_MESSAGE);
         SelenideElement notice = $x("//div[@class=\"flash notice\"]");
 
@@ -136,7 +136,7 @@ public class UiTest {
         deleteButtons.get(4).click();
         deleteButtons.get(0).click();
         deleteButtons.get(2).click();
-        
+
         System.out.println("Count of buttons: " + deleteButtons.size());
         System.out.println($x("//div[@id=\"elements\"]").getText());
 
@@ -146,32 +146,33 @@ public class UiTest {
     Перейти на страницу Status Codes.
     Кликнуть на каждый статус в новом тестовом методе, вывести на экран текст после перехода на страницу статуса.
      */
+    SelenideElement textElement = $x("//div[@class=\"example\"]");
     @Test
     void click200StatusCodeTest() {
         open(baseUrl + STATUS_CODES);
         $x("//a[text()=\"200\"]").click();
-        System.out.println($x("//div[@class=\"example\"]").getText());
+        System.out.println(textElement.getText());
     }
 
     @Test
     void click301StatusCodeTest() {
         open(baseUrl + STATUS_CODES);
         $x("//a[text()=\"301\"]").click();
-        System.out.println($x("//div[@class=\"example\"]").getText());
+        System.out.println(textElement.getText());
     }
 
     @Test
     void click404StatusCodeTest() {
         open(baseUrl + STATUS_CODES);
         $x("//a[text()=\"404\"]").click();
-        System.out.println($x("//div[@class=\"example\"]").getText());
+        System.out.println(textElement.getText());
     }
 
     @Test
     void click500StatusCodeTest() {
         open(baseUrl + STATUS_CODES);
         $x("//a[text()=\"500\"]").click();
-        System.out.println($x("//div[@class=\"example\"]").getText());
+        System.out.println(textElement.getText());
     }
 
     @AfterEach
