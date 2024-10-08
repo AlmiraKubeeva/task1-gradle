@@ -178,8 +178,4 @@ public class UiTest {
     void tearDown() {
         getWebDriver().quit();
     }
-
-     /*
-    Добавить плагин allure, так, чтобы формировался allure отчет по проведенным тестам.
-     */
 }
