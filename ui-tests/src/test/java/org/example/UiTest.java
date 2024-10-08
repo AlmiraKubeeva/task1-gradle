@@ -64,9 +64,9 @@ public class UiTest {
          int countOfTrying = 10;
 
          while (countOfTrying > 0 && elements.size() != 5) {
+             System.out.println(countOfTrying);
              countOfTrying--;
              open(baseUrl + DISAPPEARING_ELEMENTS);
-             elements = $$x("//*[@id=\"content\"]//li");
          }
         assert countOfTrying != 0 || elements.size() == 5;
     }
@@ -106,14 +106,13 @@ public class UiTest {
     После каждого неудачного клика закрывать всплывающее уведомление.
      */
     @Test
-    void notificationMessagesTest() {
+    void notificationMessagesTest() throws InterruptedException {
         open(baseUrl + NOTIFICATION_MESSAGE);
         SelenideElement notice = $x("//div[@class=\"flash notice\"]");
 
         while (notice.getText().compareTo("Action successful\n" + "×") != 0) {
             notice.find("a").click();
             $x("//a[text()=\"Click here\"]").click();
-            notice = $x("//div[@class=\"flash notice\"]");
        }
     }
 
@@ -127,19 +126,20 @@ public class UiTest {
     void addElementsTest() {
         open(baseUrl + ADD_REMOVE_ELEMENTS);
         SelenideElement addElementButton = $x("//button[text()=\"Add Element\"]");
-        String pathToDeleteButtons = "//div[@id=\"elements\"]/*";
+        ElementsCollection deleteButtons = $$x("//div[@id=\"elements\"]/*");
 
         for (int i = 0; i < 5; ++i) {
             addElementButton.click();
-            System.out.println($$x(pathToDeleteButtons).get(i).getText());
+            System.out.println(deleteButtons.get(i).getText());
         }
 
-        $$x(pathToDeleteButtons).get(4).click();
-        $$x(pathToDeleteButtons).get(0).click();
-        $$x(pathToDeleteButtons).get(2).click();
-
-        System.out.println("Count of buttons: " + $$x(pathToDeleteButtons).size());
+        deleteButtons.get(4).click();
+        deleteButtons.get(0).click();
+        deleteButtons.get(2).click();
+        
+        System.out.println("Count of buttons: " + deleteButtons.size());
         System.out.println($x("//div[@id=\"elements\"]").getText());
+
     }
 
     /*
