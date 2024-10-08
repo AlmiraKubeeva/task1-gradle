@@ -1,7 +1,10 @@
+plugins {
+    id("io.qameta.allure") version "2.12.0"
+}
+
 dependencies {
     implementation project(':api-tests')
 
-    testImplementation 'org.testcontainers:selenium:1.19.0'
-    testImplementation 'com.codeborne:selenide:6.14.0'
+    testImplementation 'com.codeborne:selenide:7.5.1'
     testImplementation 'io.qameta.allure:allure-selenide:2.21.0'
 }
