@@ -1,9 +1,9 @@
 package org.example;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -25,19 +25,28 @@ public class UiTest {
     Проверять корректное состояние каждого чекбокса после каждого нажатия на него.
     Запустить тест с помощью @ParametrizedTest, изменяя порядок нажатия на чекбоксы с помощью одного параметра.
      */
-    @Test
+    //int n;
+
+    @ParameterizedTest()
+
     void checkboxesChangeBothValuesTest() {
         open(baseUrl + CHECKBOXES);
         ElementsCollection checkboxes = $$x("//input");
+
+
         checkboxes.get(0).click();
 
         System.out.printf("Value of checkbox 1 is %b.%n", checkboxes.get(0).getAttribute("checked"));
         System.out.printf("Value of checkbox 2 is %b.%n", checkboxes.get(1).getAttribute("checked"));
 
+        checkboxes.get(0).should(Condition.attribute("checked", "true"));
+
         checkboxes.get(1).click();
 
         System.out.printf("Value of checkbox 1 is %b.%n", checkboxes.get(0).getAttribute("checked"));
         System.out.printf("Value of checkbox 2 is %b.%n", checkboxes.get(1).getAttribute("checked"));
+
+        checkboxes.get(1).should(Condition.attribute("checked", ""));
     }
 
     /*
@@ -55,9 +64,13 @@ public class UiTest {
         SelenideElement dropdown = $x("//select[@id='dropdown']");
         options.get(1).click();
         System.out.printf("Current text of dropdown element is %s.%n", dropdown.getText());
+        options.get(1).should(Condition.attribute("selected", "true"));
+        options.get(2).should(Condition.attribute("selected", ""));
 
         options.get(2).click();
         System.out.printf("Current text of dropdown element is %s.%n", dropdown.getText());
+        options.get(1).should(Condition.attribute("selected", ""));
+        options.get(2).should(Condition.attribute("selected", "true"));
     }
 
     /*
@@ -67,18 +80,24 @@ public class UiTest {
     5. Добавить проверки в задание Disappearing Elements из предыдущей лекции.
     Для каждого обновления страницы проверять наличие 5 элементов. Использовать @RepeatedTest.
      */
-    @Test
+    //@Test
+   // @RepeatedTest(value = 10, failureThreshold = 9)
+    @RepeatedTest(value = 10)
     void disappearingElementsShow5ElementsTest() {
          open(baseUrl + DISAPPEARING_ELEMENTS);
          ElementsCollection elements = $$x("//*[@id=\"content\"]//li");
-         int countOfTrying = 10;
+         /*int countOfTrying = 10;
 
          while (countOfTrying > 0 && elements.size() != 5) {
              System.out.println(countOfTrying);
              countOfTrying--;
              open(baseUrl + DISAPPEARING_ELEMENTS);
          }
-        assert countOfTrying != 0 || elements.size() == 5;
+        assert countOfTrying != 0 || elements.size() == 5;*/
+        //assert elements.size() == 5;
+        System.out.println("size: " + elements.size());
+        elements.should(CollectionCondition.size(5));
+
     }
 
     /*
@@ -98,6 +117,7 @@ public class UiTest {
         SelenideElement input = $x("//input");
         input.sendKeys("5");
         System.out.println(input.getAttribute("value"));
+        input.should(Condition.attribute("value", "5"));
     }
 
     /*
@@ -109,15 +129,23 @@ public class UiTest {
     При каждом наведении курсора, проверить, что отображаемый текст совпадает с ожидаемым.
     Выполнить тест с помощью @ParametrizedTest, в каждом тесте, указывая на какой элемент наводить курсор
      */
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2})
     void hoversPrintTextFromPictureTest() {
+        int i;
         open(baseUrl + HOVERS);
         ElementsCollection figures = $$x("//div[@class=\"figure\"]");
+        /*
         for (int i = 0; i < 3; ++i) {
             figures.get(i).hover();
             System.out.printf("Image %d:\n", i + 1);
             System.out.println(figures.get(i).getText());
-        }
+            $$x("//div[@class=\"figcaption\"]").get(i).should(Condition.visible);
+        }*/
+        figures.get(i).hover();
+        System.out.printf("Image %d:\n", i + 1);
+        System.out.println(figures.get(i).getText());
+        $$x("//div[@class=\"figcaption\"]").get(i).should(Condition.visible);
     }
 
     /*
