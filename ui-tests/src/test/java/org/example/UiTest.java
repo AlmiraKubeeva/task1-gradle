@@ -42,7 +42,7 @@ public class UiTest {
         String expectedState = shouldBeChecked ? "true" : "";
         checkboxes.get(index).should(Condition.attribute("checked", expectedState));
     }
-    
+
     @ParameterizedTest
     @CsvSource({
             "0, true, 1, false", // Клик по первому чекбоксу, затем по второму
@@ -287,11 +287,6 @@ public class UiTest {
         System.out.println(textElement.getText());
         textElement.should(Condition.text("This page returned a 500 status code."));
     }
-
-    /*
-    Добавить в Allure Listener так, чтобы записывались действия с элементами.
-    По желанию можно внедрить в код аннотацию @Step.
-     */
 
     @AfterEach
     void tearDown() {
