@@ -42,8 +42,7 @@ public class UiTest {
         String expectedState = shouldBeChecked ? "true" : "";
         checkboxes.get(index).should(Condition.attribute("checked", expectedState));
     }
-
-    @Step("Тестируем чекбоксы")
+    
     @ParameterizedTest
     @CsvSource({
             "0, true, 1, false", // Клик по первому чекбоксу, затем по второму
