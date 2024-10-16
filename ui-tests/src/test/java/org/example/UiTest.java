@@ -95,17 +95,15 @@ public class UiTest {
     5. Добавить проверки в задание Disappearing Elements из предыдущей лекции.
     Для каждого обновления страницы проверять наличие 5 элементов. Использовать @RepeatedTest.
      */
-    @RepeatedTest(value = 5)
+    static boolean countOfElementsIs5 = false;
+    @RepeatedTest(value = 10)
     void disappearingElementsShow5ElementsTest() {
-        open(baseUrl + DISAPPEARING_ELEMENTS);
-        ElementsCollection elements = $$x("//*[@id=\"content\"]//li");
-        int countOfTrying = 10;
-
-        while (countOfTrying > 0 && elements.size() != 5) {
-            countOfTrying--;
-            refresh();
+        if (!countOfElementsIs5) {
+            open(baseUrl + DISAPPEARING_ELEMENTS);
+            ElementsCollection elements = $$x("//*[@id=\"content\"]//li");
+            elements.should(CollectionCondition.size(5));
+            countOfElementsIs5 = true;
         }
-        elements.should(CollectionCondition.size(5));
     }
 
     /*
@@ -161,19 +159,18 @@ public class UiTest {
     Выполнить тест с помощью @ParametrizedTest, в каждом тесте, указывая на какой элемент наводить курсор
      */
     @ParameterizedTest
-    @ValueSource(ints={0, 1, 2})
-    void hoversPrintTextFromPictureTest(int i) {
+    @CsvSource({
+            "0, name: user1",
+            "1, name: user2",
+            "2, name: user3"
+    })
+    void hoversPrintTextFromPictureTest(int i, String expectedText) {
         open(baseUrl + HOVERS);
-        List<String> expectedTexts = Arrays.asList(
-                "name: user1",
-                "name: user2",
-                "name: user3"
-        );
         ElementsCollection figures = $$x("//div[@class=\"figure\"]");
         figures.get(i).hover();
         System.out.printf("Image %d:\n", i + 1);
         System.out.println(figures.get(i).getText());
-        figures.get(i).should(Condition.text(expectedTexts.get(i)));
+        figures.get(i).should(Condition.text(expectedText));
     }
 
     /*
@@ -212,7 +209,6 @@ public class UiTest {
     List<DynamicTest> addElementsTest() {
         List<DynamicTest> tests = new ArrayList<>();
 
-        // Динамическое создание тестов с параметрами для различных сценариев
         List<int[]> testParams = Arrays.asList(
                 new int[]{2, 1}, // 2 добавления, 1 удаление
                 new int[]{5, 2}, // 5 добавлений, 2 удаления
