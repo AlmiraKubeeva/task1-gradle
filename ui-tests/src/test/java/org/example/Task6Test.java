@@ -92,7 +92,7 @@ public class Task6Test {
         int i = 0;
         while(!texts.get(i).getText().contains("Eius")) {
             actions.scrollByAmount(0, 500).perform();
-            sleep(1000);
+            //sleep(1000);
             texts = $$x("//div[@class=\"jscroll-added\"]");
             ++i;
             //actions.scrollToElement(texts.get(i)).perform();
