@@ -3,11 +3,12 @@ package org.example;
 import com.codeborne.selenide.*;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
+
+import java.util.*;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -50,90 +51,70 @@ public class Task6Test {
         open(baseUrl + CONTEXT_MENU);
         SelenideElement hot_spot = $x("//div[@id=\"hot-spot\"]");
         Actions actions = new Actions(getWebDriver());
-        /*
-        Alert alert = new Alert() {
-            @Override
-            public void dismiss() {
 
-            }
-
-            @Override
-            public void accept() {
-
-            }
-
-            @Override
-            public String getText() {
-                return "";
-            }
-
-            @Override
-            public void sendKeys(String keysToSend) {
-
-            }
-        }
-
-        actions.contextClick().perform();
-
-        actions.getText()
-         */
+        actions.contextClick(hot_spot).perform();
+        Alert alert = Selenide.switchTo().alert();
+        Assertions.assertEquals("You selected a context menu", alert.getText());
     }
 
     /*
     Перейти на страницу Infinite Scroll.
     Проскролить страницу до текста «Eius», проверить, что текст в поле зрения.
      */
-
-    @RepeatedTest(value = 10)
-    void infiniteScrollToTextEiusTest() {
-        open(baseUrl + INFINITE_SCROLL);
-        Actions actions = new Actions(getWebDriver());
-        ElementsCollection texts = $$x("//div[@class=\"jscroll-added\"]");
-        int i = 0;
-        while(!texts.get(i).getText().contains("Eius")) {
-            actions.scrollByAmount(0, 500).perform();
-            //sleep(1000);
-            texts = $$x("//div[@class=\"jscroll-added\"]");
-            ++i;
-            //actions.scrollToElement(texts.get(i)).perform();
-        }
-    }
-    /*
     @Test
     void infiniteScrollToTextEiusTest() {
         open(baseUrl + INFINITE_SCROLL);
         Actions actions = new Actions(getWebDriver());
-        ElementsCollection texts = $$x("//div[@class=\"jscroll-added\"]/br");
+        String expression = "//div[@class='jscroll-added']";
+        ElementsCollection texts = $$x(expression);
         int i = 0;
 
         while (true) {
-            // Проверяем, что индекс i не выходит за границы списка
-            if (i >= texts.size()) {
-                // Если текста с "Eius" пока не найдено, скроллим вниз и обновляем коллекцию
-                actions.scrollByAmount(0, 1000).perform();
-                texts = $$x("//div[@class=\"jscroll-added\"]/br");
-            } else if (texts.get(i).getText().contains("Non")) {
-                // Если найден нужный текст, выходим из цикла
-                break;
+            if (i < texts.size()) {
+                if (texts.get(i).getText().contains("Eius")) {
+                    texts.get(i).should(Condition.visible);
+                    break;
+                }
+                i++;
             } else {
-                // Переходим к следующему элементу
-                ++i;
+                actions.scrollByAmount(0, 500).perform();
+                texts = $$x(expression);
             }
         }
-
-        // Проверка того, что текст с "Eius" теперь в поле зрения
-        texts.get(i).scrollTo();
-        sleep(10000); // Для наглядности, если нужно
     }
-     */
+
     /*
     Перейти на страницу Key Presses. Нажать по 10 латинских символов, клавиши Enter, Ctrl, Alt, Tab.
     Проверить, что после нажатия отображается всплывающий текст снизу, соответствующий конкретной клавише.
      */
-    @Test
-    void keyPressesTextIsVisibleTest() {
+    @TestFactory
+    List<DynamicTest> keyPressesTextIsVisibleTest() {
         open(baseUrl + KEY_PRESSES);
+        Actions actions = new Actions(getWebDriver());
+        SelenideElement result = $x("//p[@id=\"result\"]");
+        List<DynamicTest> tests = new ArrayList<>();
 
+        List<String> alphabetKeys = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
+
+        alphabetKeys.forEach(key -> {
+            tests.add(DynamicTest.dynamicTest("Input key: " + key, () -> {
+                actions.sendKeys(key).perform();
+                sleep(1000);
+                result.should(Condition.visible).should(Condition.text("You entered: " + key));
+            }));
+        });
+
+        List<Keys> specialKeys = Arrays.asList(Keys.ENTER, Keys.CONTROL, Keys.ALT, Keys.TAB);
+
+        specialKeys.forEach(key -> {
+            tests.add(DynamicTest.dynamicTest("Input key: " + key.name(), () -> {
+                actions.sendKeys(key).perform();
+                sleep(1000);
+                result.should(Condition.visible).should(Condition.text("You entered: " + key.name()));
+            }));
+        });
+
+        return tests;
     }
 
     @AfterEach
