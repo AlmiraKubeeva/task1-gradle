@@ -6,6 +6,7 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.*;
@@ -65,6 +66,7 @@ public class Task6Test {
     void infiniteScrollToTextEiusTest() {
         open(baseUrl + INFINITE_SCROLL);
         Actions actions = new Actions(getWebDriver());
+        Action action = actions.scrollByAmount(0, 500).build();
         String expression = "//div[@class='jscroll-added']";
         ElementsCollection texts = $$x(expression);
         int i = 0;
@@ -77,8 +79,7 @@ public class Task6Test {
                 }
                 i++;
             } else {
-                actions.scrollByAmount(0, 500).perform();
-                texts = $$x(expression);
+                action.perform();
             }
         }
     }
