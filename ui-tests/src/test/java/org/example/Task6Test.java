@@ -67,8 +67,7 @@ public class Task6Test {
         open(baseUrl + INFINITE_SCROLL);
         Actions actions = new Actions(getWebDriver());
         Action action = actions.scrollByAmount(0, 500).build();
-        String expression = "//div[@class='jscroll-added']";
-        ElementsCollection texts = $$x(expression);
+        ElementsCollection texts = $$x("//div[@class='jscroll-added']");
         int i = 0;
 
         while (true) {
