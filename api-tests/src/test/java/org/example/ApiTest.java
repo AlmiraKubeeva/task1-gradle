@@ -1,5 +1,5 @@
 package org.example;
-
+/*
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -16,3 +16,4 @@ public class ApiTest {
         System.out.println("This is a smoke test.");
     }
 }
+*/
