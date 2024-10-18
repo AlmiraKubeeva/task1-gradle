@@ -21,7 +21,12 @@ public class UiTest {
 
     @BeforeEach
     void setUp() {
+        Configuration.remote = "http://localhost:4444/wd/hub";
         Configuration.browser = "chrome";
+        Configuration.browserVersion = "120.0";
+        Configuration.browserSize = "1920x1080";
+        Configuration.timeout = 10000;
+
         SelenideLogger.addListener("AllureSSelenide", new AllureSelenide()
                 .screenshots(true)
                 .savePageSource(true));
