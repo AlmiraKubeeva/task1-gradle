@@ -23,6 +23,7 @@ public class UiTest {
     void setUp() {
         Configuration.remote = "http://localhost:4444/wd/hub";
         Configuration.browser = "chrome";
+        Configuration.headless = true;
         Configuration.browserVersion = "120.0";
         Configuration.browserSize = "1920x1080";
         Configuration.timeout = 10000;
