@@ -23,7 +23,9 @@ public class UiTest {
 
     @BeforeEach
     void setUp() {
-        Configuration.remote = "http://89.169.147.50:4444/wd/hub";
+
+        Configuration.remote = "http://84.201.169.172:4444/wd/hub";
+        //Configuration.remote = "http://89.169.147.50:4444/wd/hub";
         //Configuration.browser = "chrome";
 
         Configuration.browserCapabilities = new DesiredCapabilities("chrome", "120.0", Platform.LINUX);
