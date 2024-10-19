@@ -37,66 +37,66 @@ public class UiTest {
                 .savePageSource(true));
     }
 
-    /*
-    4. Перейти на страницу Checkboxes.
-    Выделить первый чекбокс, снять выделение со второго чекбокса.
-    Вывести в консоль состояние атрибута checked для каждого чекбокса.
-
-    5. Добавить проверки в задание Checkboxes из предыдущей лекции.
-    Проверять корректное состояние каждого чекбокса после каждого нажатия на него.
-    Запустить тест с помощью @ParametrizedTest, изменяя порядок нажатия на чекбоксы с помощью одного параметра.
-     */
-    // Метод для клика по чекбоксу и проверки его состояния
-    void toggleAndCheckCheckbox(ElementsCollection checkboxes, int index, boolean shouldBeChecked) {
-        checkboxes.get(index).click();
-        String expectedState = shouldBeChecked ? "true" : "";
-        checkboxes.get(index).should(Condition.attribute("checked", expectedState));
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "0, true, 1, false", // Клик по первому чекбоксу, затем по второму
-            "1, false, 0, true"  // Клик по второму чекбоксу, затем по первому
-    })
-    void checkboxesChangeBothValuesTest(int firstCheckbox, boolean firstShouldBeChecked,
-                                        int secondCheckbox, boolean secondShouldBeChecked) {
-        open(baseUrl + CHECKBOXES);
-        ElementsCollection checkboxes = $$x("//input");
-
-        toggleAndCheckCheckbox(checkboxes, firstCheckbox, firstShouldBeChecked);
-
-        System.out.printf("Checkbox %d state after first click: %b%n", firstCheckbox,
-                checkboxes.get(firstCheckbox).getAttribute("checked") != null);
-
-        toggleAndCheckCheckbox(checkboxes, secondCheckbox, secondShouldBeChecked);
-
-        System.out.printf("Checkbox %d state after second click: %b%n", secondCheckbox,
-                checkboxes.get(secondCheckbox).getAttribute("checked") != null);
-    }
-//
 //    /*
-//    4. Перейти на страницу Dropdown.
-//    Выбрать первую опцию, вывести в консоль текущий текст элемента dropdown,
-//    выбрать вторую опцию, вывести в консоль текущий текст элемента dropdown.
+//    4. Перейти на страницу Checkboxes.
+//    Выделить первый чекбокс, снять выделение со второго чекбокса.
+//    Вывести в консоль состояние атрибута checked для каждого чекбокса.
 //
-//    5. Добавить проверки в задание Dropdown из предыдущей лекции.
-//    Проверять корректное состояние каждого dropDown после каждого нажатия на него.
+//    5. Добавить проверки в задание Checkboxes из предыдущей лекции.
+//    Проверять корректное состояние каждого чекбокса после каждого нажатия на него.
+//    Запустить тест с помощью @ParametrizedTest, изменяя порядок нажатия на чекбоксы с помощью одного параметра.
 //     */
-//    void clickAndCheckOptionPrintTextOfDropdown(ElementsCollection options, int optionIndex, SelenideElement dropdown) {
-//        options.get(optionIndex).click();
-//        dropdown.should(Condition.text(String.format("Option %d", optionIndex)));
-//        System.out.printf("Current text of dropdown element is %s.%n", dropdown.getText());
+//    // Метод для клика по чекбоксу и проверки его состояния
+//    void toggleAndCheckCheckbox(ElementsCollection checkboxes, int index, boolean shouldBeChecked) {
+//        checkboxes.get(index).click();
+//        String expectedState = shouldBeChecked ? "true" : "";
+//        checkboxes.get(index).should(Condition.attribute("checked", expectedState));
 //    }
 //
-//    @Test
-//    void dropdownPrintAllOOptionsTextTest() {
-//        open(baseUrl + DROPDOWN);
-//        ElementsCollection options = $$x("//option");
-//        SelenideElement dropdown = $x("//select[@id='dropdown']");
-//        clickAndCheckOptionPrintTextOfDropdown(options, 1, dropdown);
+//    @ParameterizedTest
+//    @CsvSource({
+//            "0, true, 1, false", // Клик по первому чекбоксу, затем по второму
+//            "1, false, 0, true"  // Клик по второму чекбоксу, затем по первому
+//    })
+//    void checkboxesChangeBothValuesTest(int firstCheckbox, boolean firstShouldBeChecked,
+//                                        int secondCheckbox, boolean secondShouldBeChecked) {
+//        open(baseUrl + CHECKBOXES);
+//        ElementsCollection checkboxes = $$x("//input");
 //
-//        clickAndCheckOptionPrintTextOfDropdown(options, 2, dropdown);
+//        toggleAndCheckCheckbox(checkboxes, firstCheckbox, firstShouldBeChecked);
+//
+//        System.out.printf("Checkbox %d state after first click: %b%n", firstCheckbox,
+//                checkboxes.get(firstCheckbox).getAttribute("checked") != null);
+//
+//        toggleAndCheckCheckbox(checkboxes, secondCheckbox, secondShouldBeChecked);
+//
+//        System.out.printf("Checkbox %d state after second click: %b%n", secondCheckbox,
+//                checkboxes.get(secondCheckbox).getAttribute("checked") != null);
 //    }
+
+    /*
+    4. Перейти на страницу Dropdown.
+    Выбрать первую опцию, вывести в консоль текущий текст элемента dropdown,
+    выбрать вторую опцию, вывести в консоль текущий текст элемента dropdown.
+
+    5. Добавить проверки в задание Dropdown из предыдущей лекции.
+    Проверять корректное состояние каждого dropDown после каждого нажатия на него.
+     */
+    void clickAndCheckOptionPrintTextOfDropdown(ElementsCollection options, int optionIndex, SelenideElement dropdown) {
+        options.get(optionIndex).click();
+        dropdown.should(Condition.text(String.format("Option %d", optionIndex)));
+        System.out.printf("Current text of dropdown element is %s.%n", dropdown.getText());
+    }
+
+    @Test
+    void dropdownPrintAllOOptionsTextTest() {
+        open(baseUrl + DROPDOWN);
+        ElementsCollection options = $$x("//option");
+        SelenideElement dropdown = $x("//select[@id='dropdown']");
+        clickAndCheckOptionPrintTextOfDropdown(options, 1, dropdown);
+
+        clickAndCheckOptionPrintTextOfDropdown(options, 2, dropdown);
+    }
 //
 //    /*
 //    4. Перейти на страницу Disappearing Elements.
