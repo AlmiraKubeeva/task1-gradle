@@ -28,7 +28,7 @@ public class UiTest {
         //Configuration.remote = "http://89.169.147.50:4444/wd/hub";
         //Configuration.browser = "chrome";
 
-        Configuration.browserCapabilities = new DesiredCapabilities("chrome", "120.0", Platform.LINUX);
+        Configuration.browserCapabilities = new DesiredCapabilities("chrome", "128.0", Platform.LINUX);
         //Configuration.headless = true;
         //Configuration.browserVersion = "120.0";
         Configuration.browserSize = "1920x1080";
