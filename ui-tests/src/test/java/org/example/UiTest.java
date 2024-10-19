@@ -30,7 +30,7 @@ public class UiTest {
         //Configuration.headless = true;
         //Configuration.browserVersion = "120.0";
         Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 30000;
+        //Configuration.timeout = 30000;
 
         SelenideLogger.addListener("AllureSSelenide", new AllureSelenide()
                 .screenshots(true)
