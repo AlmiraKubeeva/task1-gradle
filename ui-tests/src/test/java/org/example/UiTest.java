@@ -27,8 +27,8 @@ public class UiTest {
         //Configuration.browser = "chrome";
 
         Configuration.browserCapabilities = new DesiredCapabilities("chrome", "120.0", Platform.LINUX);
-        Configuration.headless = true;
-        Configuration.browserVersion = "120.0";
+        //Configuration.headless = true;
+        //Configuration.browserVersion = "120.0";
         Configuration.browserSize = "1920x1080";
         Configuration.timeout = 10000;
 
